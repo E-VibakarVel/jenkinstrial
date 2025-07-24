@@ -14,7 +14,7 @@ pipeline {
         stage('Build') {
             steps {
                 // Execute Maven clean and package goals, skipping tests
-                sh 'mvn -B -DskipTests clean package' //
+                bat 'mvn -B -DskipTests clean package' //
                 echo 'Maven build completed successfully'
             }
         }
@@ -23,7 +23,7 @@ pipeline {
         stage('Test') {
             steps {
                 // Execute Maven test goal
-                sh 'mvn test' //
+                bat 'mvn test' //
                 echo 'Maven tests executed'
             }
             post {
@@ -38,7 +38,7 @@ pipeline {
         stage('Generate JAR') { 
             steps {
                 // Execute Maven package goal to build the JAR
-                sh 'mvn package' //
+                bat 'mvn package' //
                 echo 'JAR generated'
 
                 // Archive the generated JAR for later use
