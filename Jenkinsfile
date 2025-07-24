@@ -39,10 +39,10 @@ pipeline {
             steps {
                 // Execute Maven package goal to build the JAR
                 bat 'mvn package' //
-                echo 'JAR generated'
+                echo 'WAR generated'
 
                 // Archive the generated JAR for later use
-                archiveArtifacts artifacts: 'target/*.jar', fingerprint: true //
+                archiveArtifacts artifacts: 'target/*.war', fingerprint: true //
             }
         }
     }
