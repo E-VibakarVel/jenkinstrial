@@ -7,6 +7,14 @@ pipeline {
         maven 'Maven_3_9_3' //  Ensure you've configured Maven in Jenkins under "Manage Jenkins" -> "Global Tool Configuration"
         jdk 'JDK_17'       // Ensure you've configured JDK in Jenkins under "Manage Jenkins" -> "Global Tool Configuration"
     }
+
+    parameters{
+        string{
+            name:'BRANCH',
+            type:'PT_BRANCH',
+            branchFilter:'refs/heads/.*'
+        } 
+    }
     environment{
          // Define the base name of your application JAR
         APP_NAME = "nextgen-mock" 
@@ -18,13 +26,6 @@ pipeline {
         VERSIONED_JAR_NAME = "${APP_NAME}-${BUILD_NUMBER_VAR}-${TIMESTAMP}.war"
     }
 
-    parameters{
-        gitParameter{
-            name:'BRANCH',
-            type:'PT_BRANCH',
-            branchFilter:'refs/heads/.*'
-        } 
-    }
 
     // Define the sequence of stages in the pipeline
     stages {
