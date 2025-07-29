@@ -8,9 +8,18 @@ pipeline {
         jdk 'JDK_17'       // Ensure you've configured JDK in Jenkins under "Manage Jenkins" -> "Global Tool Configuration"
     }
 
+    parameters{
+        gitParameter name:'BRANCH',type:'PT_BRANCH',branchFilter:'.*'
+    }
+
     // Define the sequence of stages in the pipeline
     stages {
         // Stage for building the project
+        stage('checkout'){
+            steps{
+                git branch:"${params.BRANCH}",url:'https://github.com/E-VibakarVel/jenkinstrial.git'
+            }
+        }
         stage('Build') {
             steps {
                 // Execute Maven clean and package goals, skipping tests
@@ -35,7 +44,7 @@ pipeline {
         }
 
         // Stage for generating the JAR artifact and archiving it
-        stage('Generate JAR') { 
+        stage('Generate WAR') { 
             steps {
                 // Execute Maven package goal to build the JAR
                 bat 'mvn package' //
