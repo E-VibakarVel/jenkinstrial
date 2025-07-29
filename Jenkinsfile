@@ -13,13 +13,14 @@ pipeline {
     }
     environment{
          // Define the base name of your application JAR
-        APP_NAME = "nextgen-mock" 
+        APP_NAME = "jenkinstrial-0.0.1-SNAPSHOT" 
+        RENAMED_WARNAME = "MOCK-JENKINS-PIPELINE"
         // Get the Jenkins build number for versioning
         BUILD_NUMBER_VAR = "${env.BUILD_NUMBER}" 
         // Get the current timestamp (you might need the Build Timestamp plugin for more robust options)
         TIMESTAMP = powershell (script: "Get-Date -Format 'yyyyMMddHHmmss'", returnStdout: true).trim()
         // Construct the versioned JAR name
-        VERSIONED_WAR_NAME = "${APP_NAME}-${BUILD_NUMBER_VAR}-${TIMESTAMP}.war"
+        VERSIONED_WAR_NAME = "${RENAMED_WARNAME}-${BUILD_NUMBER_VAR}-${TIMESTAMP}.war"
     }
 
 
