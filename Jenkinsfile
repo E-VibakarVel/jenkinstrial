@@ -36,7 +36,7 @@ pipeline {
             steps {
                 // Execute Maven clean and package goals, skipping tests
                 bat 'mvn -B -DskipTests clean package' //
-                bat 'Maven build completed successfully'
+                bat "Maven build completed successfully"
             }
         }
 
@@ -45,7 +45,7 @@ pipeline {
             steps {
                 // Execute Maven test goal
                 bat 'mvn test' //
-                bat 'Maven tests executed'
+                bat "Maven tests executed"
             }
             post {
                 // Archive JUnit test results regardless of build status
@@ -60,7 +60,7 @@ pipeline {
             steps {
                 // Execute Maven package goal to build the JAR
                 bat 'mvn package' //
-                bat 'WAR generated'
+                bat "WAR generated"
 
                 // Archive the generated JAR for later use
                 archiveArtifacts artifacts: 'target/*.war', fingerprint: true //
