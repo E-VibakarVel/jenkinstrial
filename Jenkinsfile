@@ -9,7 +9,11 @@ pipeline {
     }
 
     parameters{
-        gitParameter name:'BRANCH',type:'PT_BRANCH',branchFilter:'.*'
+        gitParameter{
+            name:'BRANCH',
+            type:'PT_BRANCH',
+            branchFilter:'refs/heads/.*'
+        } 
     }
 
     // Define the sequence of stages in the pipeline
