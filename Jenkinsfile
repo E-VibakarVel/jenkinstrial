@@ -19,6 +19,12 @@ pipeline {
     // Define the sequence of stages in the pipeline
     stages {
         // Stage for building the project
+        stage('debug branches'){
+            steps{
+                echo "git branch param ${params.BRANCH}"
+                sh ''' ls-remote --heads https://github.com/E-VibakarVel/jenkinstrial.git'''
+            }
+        }
         stage('checkout'){
             steps{
                 git branch:"${params.BRANCH}",url:'https://github.com/E-VibakarVel/jenkinstrial.git'
