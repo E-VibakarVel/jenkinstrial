@@ -74,7 +74,7 @@ pipeline {
                         // Stash the JAR file
                         stash includes: "**/target/*.war", name: 'nextgen'
                         unstash 'nextgen' // Unstash the JAR file
-                        bat "after unstash"
+                        bat "echo after unstash"
                          // Debug: list files in the target directory
                          bat  "ls -l $WORKSPACE/target/"
 
