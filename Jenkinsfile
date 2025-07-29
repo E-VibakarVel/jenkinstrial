@@ -101,13 +101,13 @@ pipeline {
     // Post-build actions, regardless of pipeline success or failure
     post { 
         always {
-            bat 'Pipeline finished' 
+            echo 'Pipeline finished' 
         }
         success {
-            bat 'Pipeline succeeded!' 
+            echo 'Pipeline succeeded!' 
         }
         failure {
-            bat 'Pipeline failed!' 
+            echo 'Pipeline failed!' 
         }
     }
 }
