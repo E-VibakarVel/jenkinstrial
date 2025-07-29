@@ -7,6 +7,16 @@ pipeline {
         maven 'Maven_3_9_3' //  Ensure you've configured Maven in Jenkins under "Manage Jenkins" -> "Global Tool Configuration"
         jdk 'JDK_17'       // Ensure you've configured JDK in Jenkins under "Manage Jenkins" -> "Global Tool Configuration"
     }
+    environment{
+         // Define the base name of your application JAR
+        APP_NAME = "nextgen-mock" 
+        // Get the Jenkins build number for versioning
+        BUILD_NUMBER_VAR = "${env.BUILD_NUMBER}" 
+        // Get the current timestamp (you might need the Build Timestamp plugin for more robust options)
+        TIMESTAMP = sh(script: "date +%Y%m%d%H%M%S", returnStdout: true).trim()
+        // Construct the versioned JAR name
+        VERSIONED_JAR_NAME = "${APP_NAME}-${BUILD_NUMBER_VAR}-${TIMESTAMP}.war"
+    }
 
     parameters{
         gitParameter{
@@ -62,6 +72,27 @@ pipeline {
 
                 // Archive the generated JAR for later use
                 archiveArtifacts artifacts: 'target/*.war', fingerprint: true //
+            }
+        }
+         stage('Upload to S3 with Versioning and Error Handling') {
+            steps {
+                script {
+                    try {
+                        // Stash the JAR file
+                        stash includes: "**/target/*.war", name: 'nextgen'
+                        unstash 'nextgen' // Unstash the JAR file
+
+                        // Rename the JAR with versioning and upload to S3
+                        sh "mv $WORKSPACE/target/${APP_NAME}.jar $WORKSPACE/target/${VERSIONED_JAR_NAME}" 
+                        // sh "aws s3 cp $WORKSPACE/target/${VERSIONED_JAR_NAME} s3://your-s3-bucket-name/${env.BRANCH_NAME}/" 
+
+                        echo "Successfully uploaded ${VERSIONED_JAR_NAME} to S3 bucket: your-s3-bucket-name/${env.BRANCH_NAME}/"
+                    } catch (Exception e) {
+                        echo "Error uploading JAR to S3: ${e.message}"
+                        currentBuild.result = 'FAILURE' // Mark the build as failed
+                        // You can add additional actions here, like sending a notification
+                    }
+                }
             }
         }
     }
