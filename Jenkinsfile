@@ -9,7 +9,7 @@ pipeline {
     }
 
     parameters{
-        string{name:'BRANCH',type:'PT_BRANCH',branchFilter:'refs/heads/.*'} 
+        string{name:'BRANCH'} 
     }
     environment{
          // Define the base name of your application JAR
