@@ -79,10 +79,10 @@ pipeline {
                          bat "dir %WORKSPACE%\\target"
                          bat "echo check"
                         // Rename the JAR with versioning and upload to S3
-                        bat  "mv dir %WORKSPACE%\\target\\${APP_NAME}.war dir %WORKSPACE%\\target\\${VERSIONED_WAR_NAME}" 
+                        bat  "move dir %WORKSPACE%\\target\\${APP_NAME}.war dir %WORKSPACE%\\target\\${VERSIONED_WAR_NAME}" 
                         // bat "aws s3 cp $WORKSPACE/target/${VERSIONED_JAR_NAME} s3://your-s3-bucket-name/${env.BRANCH_NAME}/" 
 
-                        bat "Successfully uploaded ${VERSIONED_WAR_NAME} to S3 bucket: your-s3-bucket-name/${env.BRANCH_NAME}/"
+                        bat "echo Successfully uploaded ${VERSIONED_WAR_NAME} to S3 bucket: your-s3-bucket-name/${env.BRANCH_NAME}/"
                     } catch (Exception e) {
                         bat "Error uploading JAR to S3: ${e.message}"
                         currentBuild.result = 'FAILURE' // Mark the build as failed
