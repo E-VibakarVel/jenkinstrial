@@ -17,7 +17,7 @@ pipeline {
         // Get the Jenkins build number for versioning
         BUILD_NUMBER_VAR = "${env.BUILD_NUMBER}" 
         // Get the current timestamp (you might need the Build Timestamp plugin for more robust options)
-        TIMESTAMP = sh(script: "date +%Y%m%d%H%M%S", returnStdout: true).trim()
+        TIMESTAMP = bat (script: "date +%Y%m%d%H%M%S", returnStdout: true).trim()
         // Construct the versioned JAR name
         VERSIONED_JAR_NAME = "${APP_NAME}-${BUILD_NUMBER_VAR}-${TIMESTAMP}.war"
     }
@@ -29,7 +29,7 @@ pipeline {
         stage('debug branches'){
             steps{
                 echo 'git branch param ${params.BRANCH}'
-                sh ''' ls-remote --heads https://github.com/E-VibakarVel/jenkinstrial.git'''
+                bat  ''' ls-remote --heads https://github.com/E-VibakarVel/jenkinstrial.git'''
             }
         }
         stage('checkout'){
@@ -81,10 +81,10 @@ pipeline {
                         unstash 'nextgen' // Unstash the JAR file
                         bat "after unstash"
                          // Debug: list files in the target directory
-                         sh "ls -l $WORKSPACE/target/"
+                         bat  "ls -l $WORKSPACE/target/"
 
                         // Rename the JAR with versioning and upload to S3
-                        sh "mv $WORKSPACE/target/${APP_NAME}.jar $WORKSPACE/target/${VERSIONED_JAR_NAME}" 
+                        bat  "mv $WORKSPACE/target/${APP_NAME}.jar $WORKSPACE/target/${VERSIONED_JAR_NAME}" 
                         // sh "aws s3 cp $WORKSPACE/target/${VERSIONED_JAR_NAME} s3://your-s3-bucket-name/${env.BRANCH_NAME}/" 
 
                         bat "Successfully uploaded ${VERSIONED_JAR_NAME} to S3 bucket: your-s3-bucket-name/${env.BRANCH_NAME}/"
@@ -101,13 +101,13 @@ pipeline {
     // Post-build actions, regardless of pipeline success or failure
     post { 
         always {
-            echo 'Pipeline finished' 
+            bat 'Pipeline finished' 
         }
         success {
-            echo 'Pipeline succeeded!' 
+            bat 'Pipeline succeeded!' 
         }
         failure {
-            echo 'Pipeline failed!' 
+            bat 'Pipeline failed!' 
         }
     }
 }
