@@ -82,6 +82,9 @@ pipeline {
                         stash includes: "**/target/*.war", name: 'nextgen'
                         unstash 'nextgen' // Unstash the JAR file
 
+                         // Debug: list files in the target directory
+                         sh "ls -l $WORKSPACE/target/"
+
                         // Rename the JAR with versioning and upload to S3
                         sh "mv $WORKSPACE/target/${APP_NAME}.jar $WORKSPACE/target/${VERSIONED_JAR_NAME}" 
                         // sh "aws s3 cp $WORKSPACE/target/${VERSIONED_JAR_NAME} s3://your-s3-bucket-name/${env.BRANCH_NAME}/" 
