@@ -97,7 +97,8 @@ pipeline {
         withAWS(credentials: 'awscredentials', region: 'ap-northeast-1') { // Replace with your credentials ID and region
             bat "aws s3 cp $WORKSPACE/target/${VERSIONED_WAR_NAME} s3://ngs-testing-system-tcs/vibakarvel/jenkins//${env.BRANCH_NAME}/" 
         }
-    }
+         }
+        }
     }
 
     // Post-build actions, regardless of pipeline success or failure
