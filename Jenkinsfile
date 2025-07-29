@@ -76,8 +76,7 @@ pipeline {
                         unstash 'nextgen' // Unstash the JAR file
                         bat "echo after unstash"
                          // Debug: list files in the target directory
-                         bat  "ls -l $WORKSPACE/target/"
-
+                         bat "dir %WORKSPACE%\\target"
                         // Rename the JAR with versioning and upload to S3
                         bat  "mv $WORKSPACE/target/${APP_NAME}.jar $WORKSPACE/target/${VERSIONED_JAR_NAME}" 
                         // sh "aws s3 cp $WORKSPACE/target/${VERSIONED_JAR_NAME} s3://your-s3-bucket-name/${env.BRANCH_NAME}/" 
