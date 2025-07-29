@@ -68,7 +68,7 @@ pipeline {
             steps {
                 // Execute Maven package goal to build the JAR
                 bat 'mvn package' //
-                echo 'WAR generated'
+                bat 'WAR generated'
 
                 // Archive the generated JAR for later use
                 archiveArtifacts artifacts: 'target/*.war', fingerprint: true //
@@ -86,9 +86,9 @@ pipeline {
                         sh "mv $WORKSPACE/target/${APP_NAME}.jar $WORKSPACE/target/${VERSIONED_JAR_NAME}" 
                         // sh "aws s3 cp $WORKSPACE/target/${VERSIONED_JAR_NAME} s3://your-s3-bucket-name/${env.BRANCH_NAME}/" 
 
-                        echo "Successfully uploaded ${VERSIONED_JAR_NAME} to S3 bucket: your-s3-bucket-name/${env.BRANCH_NAME}/"
+                        bat "Successfully uploaded ${VERSIONED_JAR_NAME} to S3 bucket: your-s3-bucket-name/${env.BRANCH_NAME}/"
                     } catch (Exception e) {
-                        echo "Error uploading JAR to S3: ${e.message}"
+                        bat "Error uploading JAR to S3: ${e.message}"
                         currentBuild.result = 'FAILURE' // Mark the build as failed
                         // You can add additional actions here, like sending a notification
                     }
@@ -100,13 +100,13 @@ pipeline {
     // Post-build actions, regardless of pipeline success or failure
     post { 
         always {
-            echo 'Pipeline finished' 
+            bat 'Pipeline finished' 
         }
         success {
-            echo 'Pipeline succeeded!' 
+            bat 'Pipeline succeeded!' 
         }
         failure {
-            echo 'Pipeline failed!' 
+            bat 'Pipeline failed!' 
         }
     }
 }
