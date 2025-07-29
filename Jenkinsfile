@@ -28,7 +28,7 @@ pipeline {
         // Stage for building the project
         stage('debug branches'){
             steps{
-                bat 'git branch param ${params['BRANCH']}'
+                bat 'git branch param :'"${params.BRANCH}"
             }
         }
         stage('checkout'){
