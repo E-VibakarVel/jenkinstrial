@@ -17,7 +17,7 @@ pipeline {
         // Get the Jenkins build number for versioning
         BUILD_NUMBER_VAR = "${env.BUILD_NUMBER}" 
         // Get the current timestamp (you might need the Build Timestamp plugin for more robust options)
-        TIMESTAMP = bat (script: "date /T +%Y%m%d%H%M%S", returnStdout: true).trim()
+        TIMESTAMP = bat (script: "Get-Date -Format 'yyyyMMddHHmmss'", returnStdout: true).trim()
         // Construct the versioned JAR name
         VERSIONED_WAR_NAME = "${APP_NAME}-${BUILD_NUMBER_VAR}-${TIMESTAMP}.war"
     }
