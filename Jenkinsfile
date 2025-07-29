@@ -19,7 +19,7 @@ pipeline {
         // Get the current timestamp (you might need the Build Timestamp plugin for more robust options)
         TIMESTAMP = bat (script: "date /T +%Y%m%d%H%M%S", returnStdout: true).trim()
         // Construct the versioned JAR name
-        VERSIONED_JAR_NAME = "${APP_NAME}-${BUILD_NUMBER_VAR}-${TIMESTAMP}.war"
+        VERSIONED_WAR_NAME = "${APP_NAME}-${BUILD_NUMBER_VAR}-${TIMESTAMP}.war"
     }
 
 
@@ -77,14 +77,12 @@ pipeline {
                         bat "echo after unstash"
                          // Debug: list files in the target directory
                          bat "dir %WORKSPACE%\\target"
-                         bat "echo ${APP_NAME}.jar"
-                         bat "echo ${VERSIONED_JAR_NAME}"
                          bat "echo check"
                         // Rename the JAR with versioning and upload to S3
-                        bat  "mv dir %WORKSPACE%\\target\\${APP_NAME}.jar dir %WORKSPACE%\\target\\${VERSIONED_JAR_NAME}" 
+                        bat  "mv dir %WORKSPACE%\\target\\${APP_NAME}.war dir %WORKSPACE%\\target\\${VERSIONED_WAR_NAME}" 
                         // bat "aws s3 cp $WORKSPACE/target/${VERSIONED_JAR_NAME} s3://your-s3-bucket-name/${env.BRANCH_NAME}/" 
 
-                        bat "Successfully uploaded ${VERSIONED_JAR_NAME} to S3 bucket: your-s3-bucket-name/${env.BRANCH_NAME}/"
+                        bat "Successfully uploaded ${VERSIONED_WAR_NAME} to S3 bucket: your-s3-bucket-name/${env.BRANCH_NAME}/"
                     } catch (Exception e) {
                         bat "Error uploading JAR to S3: ${e.message}"
                         currentBuild.result = 'FAILURE' // Mark the build as failed
