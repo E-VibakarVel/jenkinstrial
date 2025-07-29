@@ -26,11 +26,7 @@ pipeline {
     // Define the sequence of stages in the pipeline
     stages {
         // Stage for building the project
-        stage('debug branches'){
-            steps{
-                bat "git branch param :${params.BRANCH}"
-            }
-        }
+
         stage('checkout'){
             steps{
                 git branch:"${params.BRANCH}",url:'https://github.com/E-VibakarVel/jenkinstrial.git'
