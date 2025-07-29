@@ -31,7 +31,7 @@ pipeline {
         // Stage for building the project
         stage('debug branches'){
             steps{
-                echo "git branch param ${params.BRANCH}"
+                echo 'git branch param ${params.BRANCH}'
                 sh ''' ls-remote --heads https://github.com/E-VibakarVel/jenkinstrial.git'''
             }
         }
@@ -53,7 +53,7 @@ pipeline {
             steps {
                 // Execute Maven test goal
                 bat 'mvn test' //
-                echo 'Maven tests executed'
+                bat 'Maven tests executed'
             }
             post {
                 // Archive JUnit test results regardless of build status
@@ -76,12 +76,13 @@ pipeline {
         }
          stage('Upload to S3 with Versioning and Error Handling') {
             steps {
+                bat "echo inside s3stage"
                 script {
                     try {
                         // Stash the JAR file
                         stash includes: "**/target/*.war", name: 'nextgen'
                         unstash 'nextgen' // Unstash the JAR file
-
+                        bat "after unstash"
                          // Debug: list files in the target directory
                          sh "ls -l $WORKSPACE/target/"
 
