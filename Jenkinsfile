@@ -28,8 +28,7 @@ pipeline {
         // Stage for building the project
         stage('debug branches'){
             steps{
-                echo 'git branch param ${params.BRANCH}'
-                bat  ''' ls-remote --heads https://github.com/E-VibakarVel/jenkinstrial.git'''
+                bat 'git branch param ${params.BRANCH}'
             }
         }
         stage('checkout'){
@@ -41,7 +40,7 @@ pipeline {
             steps {
                 // Execute Maven clean and package goals, skipping tests
                 bat 'mvn -B -DskipTests clean package' //
-                echo 'Maven build completed successfully'
+                bat 'Maven build completed successfully'
             }
         }
 
