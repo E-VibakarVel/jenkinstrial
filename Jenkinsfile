@@ -95,7 +95,7 @@ pipeline {
         stage('Upload to S3') {
         steps {
         withAWS(credentials: 'awscredentials', region: 'ap-northeast-1') { // Replace with your credentials ID and region
-            bat "aws s3 cp $WORKSPACE/target/${VERSIONED_WAR_NAME} s3://ngs-testing-system-tcs/vibakarvel/jenkins//${env.GIT_BRANCH}//" 
+            bat "aws s3 cp $WORKSPACE/target/${VERSIONED_WAR_NAME} s3://ngs-testing-system-tcs/vibakarvel/jenkins/${env.GIT_BRANCH}" 
         }
            bat "echo Successfully uploaded ${VERSIONED_WAR_NAME} to S3 bucket: your-s3-bucket-name/${env.GIT_BRANCH}/"
          }
