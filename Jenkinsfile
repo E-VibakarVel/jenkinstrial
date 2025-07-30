@@ -67,36 +67,37 @@ pipeline {
                 archiveArtifacts artifacts: 'target/*.war', fingerprint: true //
             }
         }
-        //  stage('Upload to S3 with Versioning and Error Handling') {
-        //     steps {
-        //         bat "echo inside s3stage"
-        //         script {
-        //             try {
-        //                 // Stash the JAR file
-        //                 stash includes: "**/target/*.war", name: 'nextgen'
-        //                 unstash 'nextgen' // Unstash the JAR file
-        //                 bat "echo after unstash"
-        //                  // Debug: list files in the target directory
-        //                  bat "dir %WORKSPACE%\\target"
-        //                  bat "echo check"
-        //                 // Rename the JAR with versioning and upload to S3
-        //                  bat  "move \"%WORKSPACE%\\target\\${APP_NAME}.war\" \"%WORKSPACE%\\target\\${VERSIONED_WAR_NAME}\""
-        //                 bat "aws s3 cp $WORKSPACE/target/${VERSIONED_WAR_NAME} s3://ngs-testing-system-tcs/vibakarvel/jenkins//${env.BRANCH_NAME}/" 
+         stage('Preparing war and  Error Handling') {
+            steps {
+                bat "echo inside s3stage"
+                script {
+                    try {
+                        // Stash the JAR file
+                        stash includes: "**/target/*.war", name: 'nextgen'
+                        unstash 'nextgen' // Unstash the JAR file
+                        bat "echo after unstash"
+                         // Debug: list files in the target directory
+                         bat "dir %WORKSPACE%\\target"
+                         bat "echo check"
+                        // Rename the JAR with versioning and upload to S3
+                         bat  "move \"%WORKSPACE%\\target\\${APP_NAME}.war\" \"%WORKSPACE%\\target\\${VERSIONED_WAR_NAME}\""
+                        // bat "aws s3 cp $WORKSPACE/target/${VERSIONED_WAR_NAME} s3://ngs-testing-system-tcs/vibakarvel/jenkins//${env.BRANCH_NAME}/" 
 
-        //                 bat "echo Successfully uploaded ${VERSIONED_WAR_NAME} to S3 bucket: your-s3-bucket-name/${env.BRANCH_NAME}/"
-        //             } catch (Exception e) {
-        //                 bat "Error uploading JAR to S3: ${e.message}"
-        //                 currentBuild.result = 'FAILURE' // Mark the build as failed
-        //                 // You can add additional actions here, like sending a notification
-        //             }
-        //         }
-        //     }
-        // }
+                     
+                    } catch (Exception e) {
+                        bat "Error uploading JAR to S3: ${e.message}"
+                        currentBuild.result = 'FAILURE' // Mark the build as failed
+                        // You can add additional actions here, like sending a notification
+                    }
+                }
+            }
+        }
         stage('Upload to S3') {
         steps {
         withAWS(credentials: 'awscredentials', region: 'ap-northeast-1') { // Replace with your credentials ID and region
             bat "aws s3 cp $WORKSPACE/target/${VERSIONED_WAR_NAME} s3://ngs-testing-system-tcs/vibakarvel/jenkins//${env.BRANCH_NAME}/" 
         }
+           bat "echo Successfully uploaded ${VERSIONED_WAR_NAME} to S3 bucket: your-s3-bucket-name/${env.BRANCH_NAME}/"
          }
         }
     }
