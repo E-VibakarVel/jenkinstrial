@@ -28,16 +28,16 @@ pipeline {
     stages {
         // Stage for building the project
 
-        stage('checkout'){
+        stage('Clone Repository'){
             steps{
                 git branch:"${params.BRANCH}",url:'https://github.com/E-VibakarVel/jenkinstrial.git'
             }
         }
-        stage('Build') {
+        stage('Compile Project') {
             steps {
                 // Execute Maven clean and package goals, skipping tests
-                bat 'mvn -B -DskipTests clean package' //
-                bat "echo Maven build completed successfully"
+                bat 'mvn compile' //
+                bat "echo Maven compile completed successfully"
             }
         }
 
@@ -57,7 +57,7 @@ pipeline {
         }
 
         // Stage for generating the JAR artifact and archiving it
-        stage('Generate WAR') { 
+        stage('Build Project') { 
             steps {
                 // Execute Maven package goal to build the JAR
                 bat 'mvn package' //
@@ -67,7 +67,7 @@ pipeline {
                 archiveArtifacts artifacts: 'target/*.war', fingerprint: true //
             }
         }
-         stage('Preparing war and  Error Handling') {
+         stage('War Versioning') {
             steps {
                 bat "echo inside s3stage"
                 script {
@@ -77,13 +77,11 @@ pipeline {
                         unstash 'nextgen' // Unstash the JAR file
                         bat "echo after unstash"
                          // Debug: list files in the target directory
-                         bat "dir %WORKSPACE%\\target"
-                         bat "echo check"
+                        //  bat "dir %WORKSPACE%\\target"
+                
                         // Rename the JAR with versioning and upload to S3
                          bat  "move \"%WORKSPACE%\\target\\${APP_NAME}.war\" \"%WORKSPACE%\\target\\${VERSIONED_WAR_NAME}\""
                         // bat "aws s3 cp $WORKSPACE/target/${VERSIONED_WAR_NAME} s3://ngs-testing-system-tcs/vibakarvel/jenkins//${env.BRANCH_NAME}/" 
-
-                     
                     } catch (Exception e) {
                         bat "Error uploading JAR to S3: ${e.message}"
                         currentBuild.result = 'FAILURE' // Mark the build as failed
