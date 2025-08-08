@@ -102,6 +102,7 @@ pipeline {
         }
         stage('Executing shell in EC2'){
             steps{
+                 withAWS(credentials: 'awscredentials', region: 'ap-northeast-1') {
         script{
         //   bat ''' aws ssm send-command \
         //         --document-name "AWS-RunShellScript" \
@@ -119,6 +120,7 @@ pipeline {
 --output text
                 '''
         }
+            }
         }
         }
     }
