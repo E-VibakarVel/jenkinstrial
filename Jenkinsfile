@@ -102,7 +102,7 @@ pipeline {
         }
         stage('Executing shell in EC2'){
             steps{
-            withAWS(credentials: 'awscredentials', region: 'ap-northeast-1') { // Replace with your credentials ID and region
+        script{
           sh ''' aws ssm send-command \
                 --document-name "AWS-RunShellScript" \
                 --targets "Key=instanceIds,Values=$EC2_INSTANCE_ID" \
@@ -110,7 +110,7 @@ pipeline {
                 --comment "Jenkins Command Test" \
                 --output text '''
         }
-            }
+        }
         }
     }
 
