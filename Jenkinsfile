@@ -103,7 +103,7 @@ pipeline {
         stage('Executing shell in EC2'){
             steps{
         script{
-          sh ''' aws ssm send-command \
+          bat ''' aws ssm send-command \
                 --document-name "AWS-RunShellScript" \
                 --targets "Key=instanceIds,Values=$EC2_INSTANCE_ID" \
                 --parameters 'commands=[echo hello from EC2] \
