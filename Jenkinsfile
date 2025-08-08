@@ -113,8 +113,8 @@ pipeline {
                 bat '''
 aws ssm send-command \
 --document-name "AWS-RunShellScript" \
---targets "Key=instanceIds,Values=i-04a8c6a335b8c45dd \
---parameters 'commands=["aws s3 cp s3://ngs-testing-system-tcs/vibakarvel/jenkins/origin/aws/sampledocument.txt /opt/tomcat/webapps/"] \
+--targets "Key=instanceIds,Values=$EC2_INSTANCE_ID" \
+--parameters "commands=["aws s3 cp s3://ngs-testing-system-tcs/vibakarvel/jenkins/origin/aws/sampledocument.txt /opt/tomcat/webapps/"]" \
 --comment "Jenkins Command Test" \
 --output text   '''
         }
