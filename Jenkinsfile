@@ -21,6 +21,8 @@ pipeline {
         TIMESTAMP = powershell (script: "Get-Date -Format 'yyyyMMddHHmmss'", returnStdout: true).trim()
         // Construct the versioned JAR name
         VERSIONED_WAR_NAME = "${RENAMED_WARNAME}-${BUILD_NUMBER_VAR}-${TIMESTAMP}.war"
+
+        EC2_INSTANCE_ID =credentials('awsinstancedev')
     }
 
 
@@ -97,6 +99,18 @@ pipeline {
         }
            bat "echo Successfully uploaded ${VERSIONED_WAR_NAME} to S3 bucket: your-s3-bucket-name/vibakarvel/jenkins/${env.GIT_BRANCH}/"
          }
+        }
+        stage('Executing shell in EC2'){
+            steps{
+            withAWS(credentials: 'awscredentials', region: 'ap-northeast-1') { // Replace with your credentials ID and region
+          sh ''' aws ssm send-command \
+                --document-name "AWS-RunShellScript" \
+                --targets "Key=instanceIds,Values=$EC2_INSTANCE_ID" \
+                --parameters 'commands=[echo hello from EC2] \
+                --comment "Jenkins Command Test" \
+                --output text '''
+        }
+            }
         }
     }
 
