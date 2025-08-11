@@ -119,11 +119,18 @@ pipeline {
 --comment "Jenkins Command Test" \
 --output text
                 '''
-                                bat '''
+//               bat '''
+//                 aws ssm send-command \
+// --document-name "AWS-RunShellScript" \
+// --targets "Key=instanceIds,Values=i-04a8c6a335b8c45dd" \
+// --parameters "commands=['aws s3 cp s3://ngs-testing-system-tcs/vibakarvel/jenkins/origin/aws/sampledocument1.txt /opt/tomcat/webapps/']" \
+// --output text
+//                 '''
+             bat '''
                 aws ssm send-command \
 --document-name "AWS-RunShellScript" \
 --targets "Key=instanceIds,Values=i-04a8c6a335b8c45dd" \
---parameters "commands=['aws s3 cp s3://ngs-testing-system-tcs/vibakarvel/jenkins/origin/aws/sampledocument1.txt /opt/tomcat/webapps/']" \
+--parameters "commands=['rm -rf /opt/tomcat/webapps/sampledocument1.txt']" \
 --output text
                 '''
         }
