@@ -21,6 +21,9 @@ pipeline {
         TIMESTAMP = powershell (script: "Get-Date -Format 'yyyyMMddHHmmss'", returnStdout: true).trim()
         // Construct the versioned JAR name
         VERSIONED_WAR_NAME = "${RENAMED_WARNAME}-${BUILD_NUMBER_VAR}-${TIMESTAMP}.war"
+
+        SONARQUBE_SERVER ="sonarqubelocalserver"
+        SONARQUBE_SCANNER = "sonar-scanner"
     }
 
 
@@ -55,6 +58,17 @@ pipeline {
                 }
             }
         }
+
+        //sonarqube
+
+        stage('Sonarqube Analysis'){
+            steps{
+                withSonarQubeEnv(SONARQUBE_SERVER){
+                    bat 'mvn clean verify sonar:sonar'
+                }
+            }
+        }
+
 
         // Stage for generating the JAR artifact and archiving it
         stage('Build Project') { 
