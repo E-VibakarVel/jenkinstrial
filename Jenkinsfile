@@ -18,9 +18,9 @@ pipeline {
         // Get the Jenkins build number for versioning
         BUILD_NUMBER_VAR = "${env.BUILD_NUMBER}" 
         // Get the current timestamp (you might need the Build Timestamp plugin for more robust options)
-        TIMESTAMP = powershell (script: "Get-Date -Format 'yyyyMMddHHmmss'", returnStdout: true).trim()
+//         TIMESTAMP = powershell (script: "Get-Date -Format 'yyyyMMddHHmmss'", returnStdout: true).trim()
         // Construct the versioned JAR name
-        VERSIONED_WAR_NAME = "${RENAMED_WARNAME}-${BUILD_NUMBER_VAR}-${TIMESTAMP}.war"
+        VERSIONED_WAR_NAME = "${RENAMED_WARNAME}-${BUILD_NUMBER_VAR}.war"
     }
 
 
@@ -36,8 +36,8 @@ pipeline {
         stage('Compile Project') {
             steps {
                 // Execute Maven clean and package goals, skipping tests
-                bat 'mvn compile' //
-                bat "echo Maven compile completed successfully"
+                sh 'mvn compile' //
+                sh "echo Maven compile completed successfully"
             }
         }
 
@@ -45,8 +45,8 @@ pipeline {
         stage('Test') {
             steps {
                 // Execute Maven test goal
-                bat 'mvn test' //
-                bat "echo Maven tests executed"
+                sh 'mvn test' //
+                sh "echo Maven tests executed"
             }
             post {
                 // Archive JUnit test results regardless of build status
@@ -60,8 +60,8 @@ pipeline {
         stage('Build Project') { 
             steps {
                 // Execute Maven package goal to build the JAR
-                bat 'mvn package' //
-                bat "echo WAR generated"
+                sh 'mvn package' //
+                sh "echo WAR generated"
 
                 // Archive the generated JAR for later use
                 archiveArtifacts artifacts: 'target/*.war', fingerprint: true //
@@ -69,21 +69,21 @@ pipeline {
         }
          stage('War Versioning') {
             steps {
-                bat "echo inside s3stage"
+                sh "echo inside s3stage"
                 script {
                     try {
                         // Stash the JAR file
                         stash includes: "**/target/*.war", name: 'nextgen'
                         unstash 'nextgen' // Unstash the JAR file
-                        bat "echo after unstash"
+                        sh "echo after unstash"
                          // Debug: list files in the target directory
                         //  bat "dir %WORKSPACE%\\target"
                 
                         // Rename the JAR with versioning and upload to S3
-                         bat  "move \"%WORKSPACE%\\target\\${APP_NAME}.war\" \"%WORKSPACE%\\target\\${VERSIONED_WAR_NAME}\""
+                         sh  "move \"%WORKSPACE%\\target\\${APP_NAME}.war\" \"%WORKSPACE%\\target\\${VERSIONED_WAR_NAME}\""
                         // bat "aws s3 cp $WORKSPACE/target/${VERSIONED_WAR_NAME} s3://ngs-testing-system-tcs/vibakarvel/jenkins//${env.BRANCH_NAME}/" 
                     } catch (Exception e) {
-                        bat "Error uploading JAR to S3: ${e.message}"
+                        sh "Error uploading JAR to S3: ${e.message}"
                         currentBuild.result = 'FAILURE' // Mark the build as failed
                         // You can add additional actions here, like sending a notification
                     }
@@ -93,9 +93,9 @@ pipeline {
         stage('Upload to S3') {
         steps {
         withAWS(credentials: 'awscredentials', region: 'ap-northeast-1') { // Replace with your credentials ID and region
-            bat "aws s3 cp $WORKSPACE/target/${VERSIONED_WAR_NAME} s3://ngs-testing-system-tcs/vibakarvel/jenkins/${env.GIT_BRANCH}/" 
+            sh "aws s3 cp $WORKSPACE/target/${VERSIONED_WAR_NAME} s3://ngs-testing-system-tcs/vibakarvel/jenkins/${env.GIT_BRANCH}/"
         }
-           bat "echo Successfully uploaded ${VERSIONED_WAR_NAME} to S3 bucket: your-s3-bucket-name/vibakarvel/jenkins/${env.GIT_BRANCH}/"
+           sh "echo Successfully uploaded ${VERSIONED_WAR_NAME} to S3 bucket: your-s3-bucket-name/vibakarvel/jenkins/${env.GIT_BRANCH}/"
          }
         }
     }
@@ -103,13 +103,13 @@ pipeline {
     // Post-build actions, regardless of pipeline success or failure
     post { 
         always {
-            bat "echo Pipeline finished" 
+            sh "echo Pipeline finished"
         }
         success {
-            bat "echo Pipeline succeeded!" 
+            sh "echo Pipeline succeeded!"
         }
         failure {
-            bat "echo Pipeline failed!" 
+            sh "echo Pipeline failed!"
         }
     }
 }
