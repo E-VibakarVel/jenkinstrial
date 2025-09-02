@@ -80,7 +80,7 @@ pipeline {
                         //  bat "dir %WORKSPACE%\\target"
                 
                         // Rename the JAR with versioning and upload to S3
-                         sh  "mv \"%WORKSPACE%\\target\\${APP_NAME}.war\" \"%WORKSPACE%\\target\\${VERSIONED_WAR_NAME}\""
+                         sh  "mv WORKSPACE/target/${APP_NAME}.war" "WORKSPACE/target/${VERSIONED_WAR_NAME}"
                         // bat "aws s3 cp $WORKSPACE/target/${VERSIONED_WAR_NAME} s3://ngs-testing-system-tcs/vibakarvel/jenkins//${env.BRANCH_NAME}/" 
                     } catch (Exception e) {
                         sh "Error uploading JAR to S3: ${e.message}"
