@@ -111,6 +111,12 @@ pipeline {
          }
         }
 
+        stage('Check tomcat folder access'){
+        steps{
+        sh 'ls -la /opt/tomat/webapps'
+        }
+        }
+
         stage('war Deployment'){
             steps{
             withCredentials([string(credentialsId:'SUDO_PASS',variable:'SUDO_PASS')]){
