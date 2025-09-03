@@ -113,7 +113,7 @@ pipeline {
 
         stage('Check tomcat folder access'){
         steps{
-        sh 'ls -la /opt/tomat/webapps'
+        sh 'ls -la /opt/tomcat/webapps'
         }
         }
 
