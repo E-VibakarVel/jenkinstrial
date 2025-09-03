@@ -107,9 +107,42 @@ pipeline {
         withAWS(credentials: 'awscredentials', region: 'ap-northeast-1') { // Replace with your credentials ID and region
             sh "aws s3 cp $WORKSPACE/target/${VERSIONED_WAR_NAME} s3://ngs-testing-system-tcs/vibakarvel/jenkins/${env.GIT_BRANCH}/"
         }
-           sh "echo Successfully uploaded ${VERSIONED_WAR_NAME} to S3 bucket: your-s3-bucket-name/vibakarvel/jenkins/${env.GIT_BRANCH}/"
+           sh "echo Successfully uploaded ${VERSIONED_WAR_NAME} to S3 bucket: ngs-testing-system-tcs/vibakarvel/jenkins/${env.GIT_BRANCH}/"
          }
         }
+
+        stage('war Deployment'){
+            steps{
+                script{
+                    def tomcatService = 'tomcat'
+                    def webappsDir = '/opt/tomcat/webapps'
+                    def s3Bucket = "s3://ngs-testing-system-tcs/vibakarvel/jenkins/${env.GIT_BRANCH}/"
+                    sh "sudo /opt/tomcat/bin/./shutdown.sh"
+                    sh"""
+
+                    existing_war=\$(ls ${webappsDir}/jenkinstrial-*.war 2>/dev/null || true)
+                    if [ -n "\$existing_war" ]: then
+                    echo "Deleting existing WAR : \$existing_war"
+                    rm -f \$existing_war
+                    else
+                    echo "NO existing war found"
+                    fi
+
+                    """
+
+                    //download new war from s3
+
+                    sh "/opt/tomcat/webapps/ aws s3 cp ${s3Bucket}/${VERSIONED_WAR_NAME} ."
+
+                //start tomcat
+                sh  "/opt/tomcat/webapps/./startup.sh"
+        }
+
+                }
+            }
+        }
+
+
     }
 
     // Post-build actions, regardless of pipeline success or failure
