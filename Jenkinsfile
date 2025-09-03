@@ -136,8 +136,6 @@ pipeline {
 
                 //start tomcat
                 sh  "/opt/tomcat/webapps/./startup.sh"
-        }
-
                 }
             }
         }
