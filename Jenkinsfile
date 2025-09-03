@@ -113,6 +113,8 @@ pipeline {
 
         stage('war Deployment'){
             steps{
+            withCredentials([string(credentialsId:'SUDO_PASS',variable:'SUDO_PASS')]){
+
                 script{
                     def tomcatService = 'tomcat'
                     def webappsDir = '/opt/tomcat/webapps'
@@ -136,6 +138,7 @@ pipeline {
 
                 //start tomcat
                 sh  "/opt/tomcat/webapps/./startup.sh"
+                }
                 }
             }
         }
