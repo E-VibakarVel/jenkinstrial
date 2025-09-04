@@ -134,7 +134,7 @@ pipeline {
 
                     sh"""
 
-                    existing_war=\$(ls ${webappsDir}/jenkinstrial-*.war 2>/dev/null || true)
+                    existing_war=\$(ls ${webappsDir}/MOCK-JENKINS-PIPELINE-*.war 2>/dev/null || true)
                     if [ -n "\$existing_war" ]; then
                     echo "Deleting existing WAR: \$existing_war"
                     rm -f \$existing_war
@@ -154,6 +154,7 @@ pipeline {
 
                 //start tomcat
                 sh  "/opt/tomcat/bin/startup.sh"
+                sh "echo tomcat script completion"
                 }
                 }
 
