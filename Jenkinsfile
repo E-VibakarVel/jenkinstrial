@@ -131,7 +131,9 @@ pipeline {
                     def tomcatService = 'tomcat'
                     def webappsDir = '/opt/tomcat/webapps'
                     def s3Bucket = "s3://ngs-testing-system-tcs/vibakarvel/jenkins/${env.GIT_BRANCH}/"
-                    sh "sudo /opt/tomcat/bin/./shutdown.sh"
+                    sh " /opt/tomcat/bin/shutdown.sh"
+                     sh "echo after shutdown script line "
+
                     sh"""
 
                     existing_war=\$(ls ${webappsDir}/jenkinstrial-*.war 2>/dev/null || true)
