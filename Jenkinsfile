@@ -125,8 +125,6 @@ pipeline {
 
         stage('war Deployment'){
             steps{
-            withCredentials([string(credentialsId:'SUDO_PASS',variable:'SUDO_PASS')]){
-
                 script{
                     def tomcatService = 'tomcat'
                     def webappsDir = '/opt/tomcat/webapps'
@@ -137,8 +135,8 @@ pipeline {
                     sh"""
 
                     existing_war=\$(ls ${webappsDir}/jenkinstrial-*.war 2>/dev/null || true)
-                    if [ -n "\$existing_war" ]: then
-                    echo "Deleting existing WAR : \$existing_war"
+                    if [ -n "\$existing_war" ]; then
+                    echo "Deleting existing WAR: \$existing_war"
                     rm -f \$existing_war
                     else
                     echo "NO existing war found"
@@ -154,7 +152,7 @@ pipeline {
                 sh  "/opt/tomcat/webapps/./startup.sh"
                 }
                 }
-            }
+
         }
 
 
