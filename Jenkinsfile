@@ -146,6 +146,8 @@ pipeline {
 
                     //download new war from s3
 
+                    sh "cd /opt/tomcat/webapps/"
+                    sh "echo after navigating to webapps folder"
                     sh "/opt/tomcat/webapps/ aws s3 cp ${s3Bucket}/${VERSIONED_WAR_NAME} ."
 
                 //start tomcat
