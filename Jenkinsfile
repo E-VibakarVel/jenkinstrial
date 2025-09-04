@@ -35,6 +35,12 @@ pipeline {
                 git branch:"${params.BRANCH}",url:'https://github.com/E-VibakarVel/jenkinstrial.git'
             }
         }
+        stage('user Check'){
+        steps{
+        sh 'whoami'
+        sh 'id'
+        }
+        }
         stage('Compile Project') {
             steps {
                 // Execute Maven clean and package goals, skipping tests
