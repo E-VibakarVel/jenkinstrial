@@ -146,10 +146,10 @@ pipeline {
 
                     //download new war from s3
  withAWS(credentials: 'awscredentials', region: 'ap-northeast-1') {
-   sh "cd /opt/tomcat/webapps/"
-                     sh "echo after navigating to webapps folder"
+//    sh "cd /opt/tomcat/webapps/"
+//                      sh "echo after navigating to webapps folder"
  //                     sh "/opt/tomcat/webapps/ aws s3 cp ${s3Bucket}/${VERSIONED_WAR_NAME} ."
-                      sh " aws s3 cp ${s3Bucket}${VERSIONED_WAR_NAME} ."
+                      sh " aws s3 cp ${s3Bucket}${VERSIONED_WAR_NAME} /opt/tomcat/webapps"
  }
 
                 //start tomcat
