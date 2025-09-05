@@ -153,7 +153,8 @@ pipeline {
  }
 
                 //start tomcat
-                sh  " /opt/tomcat/bin/catalina.sh start"
+//                 sh  " /opt/tomcat/bin/catalina.sh start"
+                sh  " nohup /opt/tomcat/bin/startup.sh"
                 sh "echo tomcat script completion"
                 }
                 }
