@@ -78,7 +78,7 @@ pipeline {
         stage('Build Project') {
             steps {
                 // Execute Maven package goal to build the JAR
-                sh 'mvn package' //
+                sh 'mvn clean package' //
                 sh "echo WAR generated"
 
                 // Archive the generated JAR for later use
