@@ -129,8 +129,8 @@ pipeline {
                     def tomcatService = 'tomcat'
                     def webappsDir = '/opt/tomcat/webapps'
                     def s3Bucket = "s3://ngs-testing-system-tcs/vibakarvel/jenkins/${env.GIT_BRANCH}/"
-//                     sh " /opt/tomcat/bin/shutdown.sh"
-sh"/opt/tomcat/bin/catalina.sh stop 10 -force"
+                    sh " /opt/tomcat/bin/shutdown.sh"
+// sh"/opt/tomcat/bin/catalina.sh stop 10 -force"
 sh"sleep 10"
                      sh "echo after shutdown script line "
 
