@@ -138,6 +138,8 @@ sh"sleep 10"
 
                     existing_war=\$(ls ${webappsDir}/MOCK-JENKINS-PIPELINE-*.war 2>/dev/null || true)
                     if [ -n "\$existing_war" ]; then
+                    dir_to_delete="${existing_war%.war}"
+                    echo"Deleting the corresponding directory :$dir_to_delete"
                     echo "Deleting existing WAR: \$existing_war"
                     rm -f \$existing_war
                     else
