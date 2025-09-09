@@ -154,7 +154,7 @@ pipeline {
 
                 //start tomcat
 //                 sh  " /opt/tomcat/bin/catalina.sh start"
-                sh  "nohup /opt/tomcat/bin/startup.sh &"
+                sh  " nohup /opt/tomcat/bin/startup.sh &"
                 sh "sleep 30"
                 sh "echo tomcat script completion"
                 }
