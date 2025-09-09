@@ -146,7 +146,7 @@ sh"sleep 10"
                     fi
                     if [ -n "\$existing_dir" ]; then
                                         echo "Deleting existing dir: \$existing_dir"
-                                        rm -f \$existing_dir
+                                        rm -rf \$existing_dir
                                         else
                                         echo "NO existing directory found"
                                         fi
