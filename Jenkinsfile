@@ -137,7 +137,7 @@ sh"sleep 10"
                     sh"""
 
                     existing_war=\$(ls ${webappsDir}/MOCK-JENKINS-PIPELINE-*.war 2>/dev/null || true)
-                    existing_dir=\$(ls ${webappsDir}/MOCK-JENKINS-PIPELINE-* 2>/dev/null || true)
+                    existing_dir=\$(ls -d ${webappsDir}/MOCK-JENKINS-PIPELINE-* 2>/dev/null || true)
                     if [ -n "\$existing_war" ]; then
                     echo "Deleting existing WAR: \$existing_war"
                     rm -f \$existing_war
