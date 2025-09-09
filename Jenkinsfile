@@ -155,7 +155,7 @@ sh"sleep 10"
  }
 
                 //start tomcat
-                sh  "BUILD_ID=dontKillMe /opt/tomcat/bin/catalina.sh start"
+                sh  "JENKINS_NODE_COOKIE=dontKillMe /opt/tomcat/bin/catalina.sh start"
 //                 sh  " nohup /opt/tomcat/bin/startup.sh &"
 //                 sh "sleep 30"
 
