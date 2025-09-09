@@ -53,15 +53,15 @@ pipeline {
         stage('Test') {
             steps {
                 // Execute Maven test goal
-                sh 'mvn test' //
+                sh 'mvn clean test' //
                 sh "echo Maven tests executed"
             }
-//             post {
-//                 // Archive JUnit test results regardless of build status
-//                 always {
-//                     junit 'target/surefire-reports/*.xml' //
-//                 }
-//             }
+            post {
+                // Archive JUnit test results regardless of build status
+                always {
+                    junit 'target/surefire-reports/*.xml' //
+                }
+            }
         }
 
          //sonarqube

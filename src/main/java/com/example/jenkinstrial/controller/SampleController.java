@@ -13,6 +13,6 @@ public class SampleController {
     @RequestMapping("/jenkins")
     @ResponseBody
     public String welcome() {
-        return "Jenkins "; // This refers to a view named "welcome" (e.g., welcome.jsp or welcome.html)
+        return "Jenkins"; // This refers to a view named "welcome" (e.g., welcome.jsp or welcome.html)
     }
 }
