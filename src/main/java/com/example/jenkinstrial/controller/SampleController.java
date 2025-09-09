@@ -15,4 +15,15 @@ public class SampleController {
     public String welcome() {
         return "Jenkins"; // This refers to a view named "welcome" (e.g., welcome.jsp or welcome.html)
     }
+
+    @RequestMapping("/notestcoverage")
+    @ResponseBody
+    public String noTestCoverage(){
+        String testData = "This is the test Data";
+        if (testData.length()>0){
+            return"length greater than 0";
+        }else{
+            return "length less than 0";
+        }
+    }
 }
