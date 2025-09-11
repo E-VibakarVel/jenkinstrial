@@ -13,7 +13,7 @@ public class SampleController {
     @RequestMapping("/jenkins")
     @ResponseBody
     public String welcome() {
-        return "Jenkins"; // This refers to a view named "welcome" (e.g., welcome.jsp or welcome.html)
+        return "Jenkins";
     }
 
     @RequestMapping("/notestcoverage")
@@ -26,4 +26,17 @@ public class SampleController {
             return "length less than 0";
         }
     }
+
+
+    @RequestMapping("/codeduplication")
+    @ResponseBody
+    public String codeDuplication() {
+        String testData = "This is the test Data";
+        if (testData.length()>0){
+            return"length greater than 0";
+        }else{
+            return "length less than 0";
+        }
+    }
+
 }
