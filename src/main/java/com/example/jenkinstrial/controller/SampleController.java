@@ -18,11 +18,11 @@ public class SampleController {
 
     @RequestMapping("/notestcoverage")
     @ResponseBody
-    public String noTestCoverage(){
+    public String noTestCoverage() {
         String testData = "This is the test Data";
-        if (testData.length()>0){
-            return"length greater than 0";
-        }else{
+        if (testData.length() > 0) {
+            return "length greater than 0";
+        } else {
             return "length less than 0";
         }
     }
@@ -32,11 +32,38 @@ public class SampleController {
     @ResponseBody
     public String codeDuplication() {
         String testData = "This is the test Data";
-        if (testData.length()>0){
-            return"length greater than 0";
-        }else{
+        if (testData.length() > 0) {
+            return "length greater than 0";
+        } else {
             return "length less than 0";
         }
     }
 
+    private void issueDetectionMethod() {
+        String result = "";
+        int num = 11;
+        if (num > 0) {
+            if (num > 10) {
+                if (num % 2 == 0) {
+                    result = "Even";
+                } else {
+                    result = "odd";
+                }
+            } else if (num == 0) {
+                result = "Zero";
+            } else {
+                result = "positive but less than10";
+            }
+
+        } else if (num<0) {
+            if (num % 2 == 0) {
+                result = "negative Even";
+            } else {
+                result = "negative odd";
+            }
+
+        }else {
+            result="Zero";
+        }
+    }
 }
