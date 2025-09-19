@@ -9,7 +9,9 @@ pipeline {
     }
 
     parameters{
-        string(name:'BRANCH') 
+        string(name:'BRANCH')
+//         choice(name:'ENVIRONMENT'choices: ['dev','test','staging','production'])
+//         choice(name:'APPLICATION'choices: ['recruitment','international'])
     }
     environment{
          // Define the base name of your application JAR
@@ -23,18 +25,32 @@ pipeline {
         VERSIONED_WAR_NAME = "${RENAMED_WARNAME}-${BUILD_NUMBER_VAR}.war"
         SONARQUBE_SERVER ="sonarqubelocalserver"
         SONARQUBE_SCANNER = "sonar-scanner"
+        CONFIG_FILE="config/${params.ENVIRONMENT}-${params.APPLICATION}.properties"
     }
 
 
     // Define the sequence of stages in the pipeline
     stages {
+
+    stage('load config'){
+    steps{
+script{
+def props = readProperties file: "${CONFIG_FILE}"
+sh "echo message:${props['message']}"
+env.message=props['message']
+}
+    }
+    }
         // Stage for building the project
 
         stage('Clone Repository'){
             steps{
+            sh "echo message from clone repo :${env.message}"
                 git branch:"${params.BRANCH}",url:'https://github.com/E-VibakarVel/jenkinstrial.git'
             }
         }
+
+
         stage('user Check'){
         steps{
         sh 'whoami'
